@@ -2,7 +2,12 @@
 #include <WebServer.h>
 #include <Update.h>
 #include <LittleFS.h>
+#include <LittleFS.h>
 #include <AccelStepper.h>
+#include <EEPROM.h>
+
+#define EEPROM_SIZE 1
+#define LANG_ADDR 0
 
 const char* ssid = "TA-Tuner-Controller";
 const char* password = "deeplabstudio";
@@ -62,6 +67,28 @@ void handlePosition() {
   server.send(200, "text/plain", pos);
 }
 
+void handleGetLang() {
+  byte lang = EEPROM.read(LANG_ADDR);
+  if (lang != 0 && lang != 1) { // Default to TR if invalid
+    lang = 0; 
+    EEPROM.write(LANG_ADDR, 0);
+    EEPROM.commit();
+  }
+  server.send(200, "text/plain", (lang == 1) ? "EN" : "TR");
+}
+
+void handleSetLang() {
+  if (server.hasArg("lang")) {
+    String langStr = server.arg("lang");
+    byte lang = (langStr == "EN") ? 1 : 0;
+    EEPROM.write(LANG_ADDR, lang);
+    EEPROM.commit();
+    server.send(200, "text/plain", "OK");
+  } else {
+    server.send(400, "text/plain", "Missing lang argument");
+  }
+}
+
 const char update_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html><html><body>
 <h2>Offline Firmware Update</h2>
@@ -74,6 +101,13 @@ void setup() {
   stepper.setMaxSpeed(1000.0);
   stepper.setAcceleration(500.0);
 
+  EEPROM.begin(EEPROM_SIZE);
+  // Optional: Check if EEPROM is uninitialized (usually 255)
+  if (EEPROM.read(LANG_ADDR) == 255) {
+    EEPROM.write(LANG_ADDR, 0); // Default TR
+    EEPROM.commit();
+  }
+
   if(!LittleFS.begin(true)){
     Serial.println("LittleFS Mount Error");
     return;
@@ -84,7 +118,10 @@ void setup() {
 
   server.on("/move", HTTP_GET, handleMove);
   server.on("/stop", HTTP_GET, handleStop);
+  server.on("/stop", HTTP_GET, handleStop);
   server.on("/position", HTTP_GET, handlePosition);
+  server.on("/getLang", HTTP_GET, handleGetLang);
+  server.on("/setLang", HTTP_GET, handleSetLang);
 
   server.on("/update", HTTP_GET, []() {
     server.send(200, "text/html", update_html);

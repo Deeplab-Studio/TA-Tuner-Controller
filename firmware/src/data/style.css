@@ -132,15 +132,19 @@ body {
   font-size: 1.2rem;
   font-weight: 800;
   border: 1px solid #444;
+  /* Default border */
   backdrop-filter: blur(10px);
+  transition: border-color 0.3s, color 0.3s;
 }
 
-.status-indicator {
-  position: absolute;
-  top: 5px;
-  right: 20px;
-  font-size: 0.8rem;
-  color: #555;
+.pos-display.connected {
+  border-color: #3fb950;
+  color: #fff;
+}
+
+.pos-display.disconnected {
+  border-color: #ff7b72;
+  color: #ff7b72;
 }
 
 /* Stop Button Area */
@@ -308,4 +312,32 @@ body {
 
 .footer-copyright a:hover {
   color: var(--primary-accent);
+}
+
+/* Language Toggle */
+.lang-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 8px 15px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 1px solid #444;
+  backdrop-filter: blur(10px);
+  color: var(--text-main);
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.lang-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #666;
+}
+
+.lang-toggle:active {
+  transform: scale(0.95);
 }

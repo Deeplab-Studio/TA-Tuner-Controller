@@ -1,3 +1,71 @@
+var currentLang = "TR";
+
+const translations = {
+  TR: {
+    title: "TA-Tuner Controller",
+    left: "SOL",
+    right: "SAĞ",
+    stop: "DUR",
+    ota: "Yazılım Güncelleme",
+    selectFile: "📂 Dosya Seç...",
+    noFile: "Henüz dosya seçilmedi",
+    updateBtn: "Güncelle",
+    closeBtn: "Kapat",
+    updateSuccess: "Güncelleme Başarılı! Cihaz yeniden başlatılıyor...",
+    updateFail: "Hata! Yükleme başarısız.",
+    alertSelect: "Lütfen bir dosya seçin!"
+  },
+  EN: {
+    title: "TA-Tuner Controller",
+    left: "LEFT",
+    right: "RIGHT",
+    stop: "STOP",
+    ota: "Firmware Update",
+    selectFile: "📂 Select File...",
+    noFile: "No file has been selected yet",
+    updateBtn: "Update",
+    closeBtn: "Close",
+    updateSuccess: "Update Successful! Device restarting...",
+    updateFail: "Error! Failed to load.",
+    alertSelect: "Please select a file!"
+  }
+};
+
+function setLanguage(lang) {
+  currentLang = lang;
+  const t = translations[lang];
+
+  document.title = t.title;
+  document.querySelector(".left-panel h2").innerText = t.left;
+  document.querySelector(".right-panel h2").innerText = t.right;
+  document.querySelector(".btn-stop").innerText = t.stop;
+  document.querySelector(".ota-box h3").innerText = t.ota;
+  document.querySelector(".btn-file").innerText = t.selectFile;
+  document.querySelector("#otaModal .btn-primary").innerText = t.updateBtn;
+  document.querySelector("#otaModal .btn-close").innerText = t.closeBtn;
+  document.querySelector(".lang-toggle").innerText = (lang === "TR" ? "TR | EN" : "EN | TR");
+}
+
+function toggleLang() {
+  const newLang = currentLang === "TR" ? "EN" : "TR";
+  setLanguage(newLang);
+  fetch('/setLang?lang=' + newLang).catch(console.error);
+}
+
+fetch('/getLang')
+  .then(res => res.text())
+  .then(lang => {
+    if (lang === "TR" || lang === "EN") {
+      setLanguage(lang);
+    } else {
+      setLanguage("TR");
+    }
+  })
+  .catch(err => {
+    console.error("Failed to get language", err);
+    setLanguage("TR");
+  });
+
 function moveMotor(steps) {
   fetch('/move?steps=' + steps)
     .then(response => {
@@ -17,6 +85,9 @@ function stopMotor() {
 }
 
 function updateStatus() {
+  const posDisplay = document.getElementById('posDisplay');
+  const posSpan = document.getElementById('position');
+
   fetch('/position')
     .then(response => {
       if (!response.ok) throw new Error("Network response was not ok");
@@ -24,19 +95,19 @@ function updateStatus() {
     })
     .then(data => {
       if (data.trim().startsWith("<") || isNaN(parseFloat(data))) {
-        document.getElementById('position').innerText = "--";
-        document.getElementById('connectionStatus').innerText = "No Connection";
-        document.getElementById('connectionStatus').style.color = "#ff7b72";
+        posSpan.innerText = "--";
+        posDisplay.classList.remove("connected");
+        posDisplay.classList.add("disconnected");
       } else {
-        document.getElementById('position').innerText = data;
-        document.getElementById('connectionStatus').innerText = "Connected";
-        document.getElementById('connectionStatus').style.color = "#3fb950";
+        posSpan.innerText = data;
+        posDisplay.classList.add("connected");
+        posDisplay.classList.remove("disconnected");
       }
     })
     .catch(err => {
-      document.getElementById('connectionStatus').innerText = "No Connection";
-      document.getElementById('connectionStatus').style.color = "#ff7b72";
-      document.getElementById('position').innerText = "--";
+      posSpan.innerText = "--";
+      posDisplay.classList.remove("connected");
+      posDisplay.classList.add("disconnected");
     });
 }
 
@@ -50,8 +121,10 @@ function toggleOTA() {
 function uploadFile() {
   var fileInput = document.getElementById("file_input");
   var file = fileInput.files[0];
+  const t = translations[currentLang];
+
   if (!file) {
-    alert("Please select a file!");
+    alert(t.alertSelect);
     return;
   }
 
@@ -74,10 +147,10 @@ function uploadFile() {
 
   xhr.onload = function () {
     if (xhr.status === 200) {
-      document.getElementById("upload_status").innerText = "Update Successful! Device restarting...";
+      document.getElementById("upload_status").innerText = t.updateSuccess;
       document.getElementById("upload_status").style.color = "#3fb950";
     } else {
-      document.getElementById("upload_status").innerText = "Error! Failed to load.";
+      document.getElementById("upload_status").innerText = t.updateFail;
       document.getElementById("upload_status").style.color = "#ff7b72";
     }
   };
@@ -88,11 +161,13 @@ function uploadFile() {
 function updateFileName() {
   var input = document.getElementById('file_input');
   var display = document.getElementById('file_name_display');
+  const t = translations[currentLang];
+
   if (input.files & input.files.length > 0) {
     display.innerText = input.files[0].name;
     display.style.color = "#3fb950";
   } else {
-    display.innerText = "No file has been selected yet";
+    display.innerText = t.noFile;
     display.style.color = "#aaa";
   }
 }
