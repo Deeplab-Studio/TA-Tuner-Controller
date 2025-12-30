@@ -78,6 +78,5 @@ Aşağıda projenin 3D tasarımı ve örnek montaj görselleri yer almaktadır:
 ![Proje Görseli 2](images/img2.png)
 
 ![Proje Görseli 3](images/img3.png)
-![Proje Görseli 4](images/img4.png)
 
-*Detaylı Görünüm*
+![Proje Görseli 4](images/img4.png)
