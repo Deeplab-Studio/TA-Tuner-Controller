@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>TA-Tuner Controller</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="main-layout">
+    <!-- Header Overlay -->
+    <div class="header-overlay">
+      <div class="pos-display">POS: <span id="position">0</span></div>
+      <div class="status-indicator" id="connectionStatus">●</div>
+    </div>
+
+    <!-- Left Panel (Negative) -->
+    <div class="panel left-panel">
+      <div class="panel-content">
+        <h2>LEFT</h2>
+        <button class="btn btn-step" onclick="moveMotor(-1)">-1</button>
+        <button class="btn btn-step" onclick="moveMotor(-5)">-5</button>
+        <button class="btn btn-step" onclick="moveMotor(-10)">-10</button>
+        <button class="btn btn-step" onclick="moveMotor(-15)">-15</button>
+        <button class="btn btn-step" onclick="moveMotor(-20)">-20</button>
+        <button class="btn btn-step" onclick="moveMotor(-25)">-25</button>
+      </div>
+    </div>
+
+    <!-- Right Panel (Positive) -->
+    <div class="panel right-panel">
+      <div class="panel-content">
+        <h2>RIGHT</h2>
+        <button class="btn btn-step" onclick="moveMotor(1)">+1</button>
+        <button class="btn btn-step" onclick="moveMotor(5)">+5</button>
+        <button class="btn btn-step" onclick="moveMotor(10)">+10</button>
+        <button class="btn btn-step" onclick="moveMotor(15)">+15</button>
+        <button class="btn btn-step" onclick="moveMotor(20)">+20</button>
+        <button class="btn btn-step" onclick="moveMotor(25)">+25</button>
+      </div>
+    </div>
+
+    <!-- Stop Button Overlay / Footer -->
+    <div class="stop-container">
+      <button class="btn btn-stop" onclick="stopMotor()">STOP</button>
+    </div>
+
+    <!-- OTA Toggle Button (Small Icon) -->
+    <div class="ota-trigger" onclick="toggleOTA()">⚙️</div>
+
+    <!-- OTA Overlay Modal -->
+    <div class="ota-modal" id="otaModal">
+      <div class="ota-box">
+        <h3>Firmware Update</h3>
+        <form id="upload_form" enctype="multipart/form-data" method="post">
+          <div class="file-upload-wrapper">
+            <input type="file" name="update" id="file_input" class="hidden-input" onchange="updateFileName()">
+            <label for="file_input" class="btn btn-file">📂 Select File...</label>
+            <div id="file_name_display" class="file-name">No file has been selected yet</div>
+          </div>
+          <button type="button" onclick="uploadFile()" class="btn btn-primary">Update</button>
+        </form>
+        <div id="progress_bar_container">
+          <div id="progress_bar">0%</div>
+        </div>
+        <p id="upload_status"></p>
+        <button class="btn-close" onclick="toggleOTA()">Close</button>
+      </div>
+    </div>
+
+    <!-- Copyright Footer -->
+    <div class="footer-copyright">
+      &copy; 2025 Copyright <a href="https://deeplabstudio.com" target="_blank">deeplabstudio.com</a>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
