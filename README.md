@@ -44,19 +44,12 @@ Yazılımda tanımlanan pin bağlantıları şöyledir:
   
 
 | ULN2003 Sürücü | ESP32 GPIO |
-
 | :--- | :--- |
-
 | IN1 | 19 |
-
 | IN2 | 18 |
-
 | IN3 | 5 |
-
 | IN4 | 17 |
-
 | + (5V - 12V) | VIN / 5V |
-
 | - (GND) | GND |
 
   
