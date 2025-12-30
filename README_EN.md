@@ -57,16 +57,8 @@ Below are the 3D design and example assembly images of the project:
 
 ![Project Image 1](images/img1.png)
 
-*General View*
-
 ![Project Image 2](images/img2.png)
-
-*Front View*
 
 ![Project Image 3](images/img3.png)
 
-*Internal Structure and Motor Connection*
-
 ![Project Image 4](images/img4.png)
-
-*Detailed View*
