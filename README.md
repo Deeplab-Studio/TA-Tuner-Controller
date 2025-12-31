@@ -25,7 +25,7 @@ Bu proje, ESP32 ve step motor kullanarak değişken kapasitörleri (variable cap
 
 *  **Kapasitör:** MLA Anten için Uygun Değişken Kapasitör (Varyable)
 
-*  **Güç Kaynağı:** ESP32 ve Motor için uygun güç kaynağı (örn. Powerbank veya USB adaptör)
+*  **Güç Kaynağı:** ESP32 ve Motor için uygun güç kaynağı (örn. 9-12V Batarya)
 
 ## Bağlantı Şeması
 
