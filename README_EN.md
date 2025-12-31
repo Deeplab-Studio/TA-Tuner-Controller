@@ -17,7 +17,7 @@ This project is a remote tuner system that allows you to control variable capaci
 *   **Motor:** 28BYJ-48 (5V) Stepper Motor
 *   **Driver:** ULN2003 Stepper Motor Driver Board
 *   **Capacitor:** Suitable Variable Capacitor for MLA Antenna
-*   **Power Supply:** Suitable power supply for ESP32 and Motor (e.g. Powerbank or USB adapter)
+*   **Power Supply:** Suitable power supply for ESP32 and Motor (e.g. 9-12V Battery)
 
 ## Connection Diagram
 
