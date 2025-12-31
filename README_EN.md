@@ -62,3 +62,8 @@ Below are the 3D design and example assembly images of the project:
 ![Project Image 3](images/img3.png)
 
 ![Project Image 4](images/img4.png)
+
+## Support me
+<a href="https://www.pcbway.com/project/shareproject/TA_Tuner_Controller_134a88ab.html"><img src="https://www.pcbway.com/project/img/images/frompcbway-1220.png" alt="PCB from PCBWay" /></a>
+[<img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_74x46.jpg">](http://paypal.me/richonguzman)
+[![Buy Me a Coffee](https://img.buymeacoffee.com/button-api/?text=Buy+me+a+coffee&emoji=☕&slug=kullaniciadın&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff)](https://buymeacoffee.com/uguraltnsy)
