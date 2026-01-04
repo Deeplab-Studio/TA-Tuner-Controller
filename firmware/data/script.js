@@ -67,7 +67,7 @@ fetch('/getLang')
   });
 
 function moveMotorDeg(deg) {
-  fetch(`/move?deg=${deg}`)
+  fetch(`/move?deg=${deg * -1}`)
     .then(response => {
       if (response.ok) {
         console.log("Moved " + deg);
