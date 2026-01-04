@@ -66,11 +66,11 @@ fetch('/getLang')
     setLanguage("TR");
   });
 
-function moveMotor(steps) {
-  fetch('/move?steps=' + steps)
+function moveMotorDeg(deg) {
+  fetch(`/move?deg=${deg}`)
     .then(response => {
       if (response.ok) {
-        console.log("Moved " + steps);
+        console.log("Moved " + deg);
       }
     })
     .catch(err => console.error(err));

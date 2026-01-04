@@ -2,7 +2,7 @@
 #include <WebServer.h>
 #include <Update.h>
 #include <LittleFS.h>
-#include <LittleFS.h>
+
 #include <AccelStepper.h>
 #include <EEPROM.h>
 
@@ -18,6 +18,7 @@ const char* password = "deeplabstudio";
 #define MOTOR_PIN_4 17
 
 #define MotorInterfaceType 8
+#define STEPS_PER_REV 4096.0
 
 AccelStepper stepper(MotorInterfaceType, MOTOR_PIN_1, MOTOR_PIN_3, MOTOR_PIN_2, MOTOR_PIN_4);
 
@@ -37,23 +38,39 @@ String getContentType(String filename) {
 
 bool handleFileRead(String path) {
   if (path.endsWith("/")) path += "index.html";
-  if (LittleFS.exists(path)) {
-    File file = LittleFS.open(path, "r");
-    String contentType = getContentType(path);
-    server.streamFile(file, contentType);
+
+  Serial.print("Requesting: ");
+  Serial.println(path);
+
+  // Hem /index.html hem index.html dene
+  String pathWithSlash = path;
+  String pathWithoutSlash = path.startsWith("/") ? path.substring(1) : path;
+
+  if (LittleFS.exists(pathWithSlash)) {
+    File file = LittleFS.open(pathWithSlash, "r");
+    server.streamFile(file, getContentType(pathWithSlash));
     file.close();
     return true;
   }
+
+  if (LittleFS.exists(pathWithoutSlash)) {
+    File file = LittleFS.open(pathWithoutSlash, "r");
+    server.streamFile(file, getContentType(pathWithoutSlash));
+    file.close();
+    return true;
+  }
+
   return false;
 }
 
 void handleMove() {
-  if (server.hasArg("steps")) {
-    int steps = server.arg("steps").toInt();
+  if (server.hasArg("deg")) {
+    float deg = server.arg("deg").toFloat();
+    long steps = deg * (STEPS_PER_REV / 360.0);
     stepper.move(steps);
     server.send(200, "text/plain", "OK");
   } else {
-    server.send(400, "text/plain", "Missing steps argument");
+    server.send(400, "text/plain", "Missing deg argument");
   }
 }
 
@@ -112,13 +129,23 @@ void setup() {
     Serial.println("LittleFS Mount Error");
     return;
   }
+  
+  Serial.println("Listing files in LittleFS:");
+  File root = LittleFS.open("/");
+  File file = root.openNextFile();
+  while(file){
+      Serial.print("  FILE: ");
+      Serial.println(file.name());
+      file = root.openNextFile();
+  }
+  Serial.println("--- End of List ---");
 
   WiFi.softAP(ssid, password);
   Serial.print("AP IP: "); Serial.println(WiFi.softAPIP());
 
   server.on("/move", HTTP_GET, handleMove);
   server.on("/stop", HTTP_GET, handleStop);
-  server.on("/stop", HTTP_GET, handleStop);
+
   server.on("/position", HTTP_GET, handlePosition);
   server.on("/getLang", HTTP_GET, handleGetLang);
   server.on("/setLang", HTTP_GET, handleSetLang);
