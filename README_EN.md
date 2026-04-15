@@ -1,5 +1,7 @@
 # TA-Tuner-Controller
 
+[![Sponsor](https://img.shields.io/badge/Sponsor-Deeplab--Studio-ea4aaa?style=for-the-badge&logo=github-sponsors)](https://github.com/sponsors/Deeplab-Studio)
+
 [Türkçe için tıklayınız](README.md)
 
 This project is a remote tuner system that allows you to control variable capacitors via WiFi using an ESP32 and a stepper motor.
