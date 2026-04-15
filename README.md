@@ -1,5 +1,6 @@
-
 # TA-Tuner-Controller
+
+[![Sponsor](https://img.shields.io/badge/Sponsor-Deeplab--Studio-ea4aaa?style=for-the-badge&logo=github-sponsors)](https://github.com/sponsors/Deeplab-Studio)
 
 [Read in English](README_EN.md)
 
